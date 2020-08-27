@@ -4,5 +4,14 @@ import com.example.sunmusic.BuildConfig
 
 object Constant {
     const val BASE_URL = BuildConfig.BASE_URL
-    const val KEY = BuildConfig.API_KEY
+    const val API_KEY = BuildConfig.API_KEY
+
+    fun createUrlString(
+        baseUrl: String,
+        key: String,
+        router: String,
+        params: Array<out String>
+    ): String {
+        return "$baseUrl$router?apikey=$key&${params.joinToString(prefix = "&", separator = "&")}"
+    }
 }
