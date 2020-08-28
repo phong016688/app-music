@@ -8,8 +8,14 @@ import java.net.URL
 import kotlin.LazyThreadSafetyMode.SYNCHRONIZED
 
 interface ApiService {
-    fun <T : JsonParser> get(router: String, vararg params: String, clazz: Class<T>): List<T>
-    fun get(router: String, vararg params: String): String
+    fun <T : JsonParser> get(
+        keyData: String = "",
+        clazz: Class<T>,
+        router: String,
+        vararg params: String
+    ): List<T>
+
+    fun get(keyData: String = "", router: String, vararg params: String): String
 }
 
 class ApiServiceImpl private constructor(
@@ -17,28 +23,44 @@ class ApiServiceImpl private constructor(
     private val key: String
 ) : ApiService {
     override fun <T : JsonParser> get(
+        keyData: String,
+        clazz: Class<T>,
         router: String,
-        vararg params: String,
-        clazz: Class<T>
+        vararg params: String
     ): List<T> {
         val urlString = Constant.createUrlString(baseUrl, key, router, params)
-        val url = URL(urlString)
-        val urlConnection = url.openConnection() as HttpURLConnection
-        if (urlConnection.responseCode == HttpURLConnection.HTTP_OK) {
-            val json = InputStreamReader(urlConnection.inputStream).readText()
-            return json.toObjectList(clazz)
+        val httpConnection = connectHttpUrl(urlString)
+        if (httpConnection.responseCode == HttpURLConnection.HTTP_OK) {
+            val json = InputStreamReader(httpConnection.inputStream).readText()
+            return json.toObjectList(clazz, keyData)
         }
+        httpConnection.disconnect()
         throw Throwable(Error.CONNECT_HTTP_FAILURE)
     }
 
-    override fun get(router: String, vararg params: String): String {
+    override fun get(keyData: String, router: String, vararg params: String): String {
         val urlString = Constant.createUrlString(baseUrl, key, router, params)
-        val url = URL(urlString)
-        val urlConnection = url.openConnection() as HttpURLConnection
-        if (urlConnection.responseCode == HttpURLConnection.HTTP_OK) {
-            return InputStreamReader(urlConnection.inputStream).readText()
+        val httpConnection = connectHttpUrl(urlString)
+        if (httpConnection.responseCode == HttpURLConnection.HTTP_OK) {
+            return InputStreamReader(httpConnection.inputStream).readText()
         }
+        httpConnection.disconnect()
         throw Throwable(Error.CONNECT_HTTP_FAILURE)
+    }
+
+    private fun connectHttpUrl(urlString: String): HttpURLConnection {
+        val url = URL(urlString)
+        val httpConnection = url.openConnection() as HttpURLConnection
+        httpConnection.apply {
+            requestMethod = "GET"
+            setRequestProperty("Content-length", "0");
+            useCaches = false
+            allowUserInteraction = false
+            connectTimeout = Constant.CONNECT_TIME_OUT
+            readTimeout = Constant.READ_TIME_OUT
+            connect()
+        }
+        return httpConnection
     }
 
     companion object {
