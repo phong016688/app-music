@@ -50,7 +50,8 @@ data class AlbumResponse(
         shortcut,
         name,
         released,
-        label, tags,
+        label,
+        tags,
         trackCount,
         artistName
     )

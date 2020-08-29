@@ -1,15 +1,16 @@
 package com.example.sunmusic.utils
 
+import com.example.sunmusic.data.executor.AppExecutorImpl
+import java.lang.Exception
 import java.util.concurrent.Future
 
-inline fun <T> Future<T>.subscribe(
+fun <T> Future<T>.subscribe(
     onSuccess: (T) -> Unit,
     onError: (Throwable) -> Unit
 ) {
-    try {
-        onSuccess(this.get())
-    } catch (e: Exception) {
-        cancel(!isCancelled || !isDone)
-        onError(Throwable(e.message))
+    val errorCallback: (Exception) -> Unit = {
+        cancel(!isCancelled || isDone)
+        onError(Throwable(it.message))
     }
+    AppExecutorImpl.instance.runAsyncOnMain(::get, onSuccess, errorCallback)
 }

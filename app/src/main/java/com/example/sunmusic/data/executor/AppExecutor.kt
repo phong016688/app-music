@@ -1,6 +1,10 @@
 package com.example.sunmusic.data.executor
 
+import android.os.Handler
+import android.os.Looper
 import com.example.sunmusic.BuildConfig
+import java.lang.Exception
+import java.lang.RuntimeException
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.ThreadFactory
@@ -8,6 +12,11 @@ import kotlin.LazyThreadSafetyMode.SYNCHRONIZED
 
 interface AppExecutor {
     fun <T> create(callable: () -> T): Future<T>
+    fun <T> runAsyncOnMain(
+        runnable: () -> T,
+        callback: (T) -> Unit = { _ -> Unit },
+        errorCallback: (Exception) -> Unit = { _ -> Unit }
+    )
 }
 
 class AppExecutorImpl private constructor() : AppExecutor {
@@ -20,6 +29,22 @@ class AppExecutorImpl private constructor() : AppExecutor {
 
     override fun <T> create(callable: () -> T): Future<T> {
         return executor.submit(callable)
+    }
+
+    override fun <T> runAsyncOnMain(
+        runnable: () -> T,
+        callback: (T) -> Unit,
+        errorCallback: (Exception) -> Unit
+    ) {
+        executor.execute {
+            val handler = Handler(Looper.getMainLooper())
+            try {
+                val result = runnable()
+                handler.post { callback(result) }
+            } catch (e: Exception) {
+                handler.post { errorCallback(e) }
+            }
+        }
     }
 
     class MyThreadFactory : ThreadFactory {
