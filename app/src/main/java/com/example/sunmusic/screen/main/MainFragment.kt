@@ -7,13 +7,17 @@ import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.example.sunmusic.R
+import com.example.sunmusic.screen.album.AlbumFragment
+import com.example.sunmusic.screen.genres.GenresFragment
+import com.example.sunmusic.screen.home.HomeFragment
+import com.example.sunmusic.screen.trending.TrendingFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_main.view.*
 import kotlinx.android.synthetic.main.layout_search.view.*
 
 class MainFragment : Fragment(R.layout.fragment_main), ViewPager.OnPageChangeListener,
     BottomNavigationView.OnNavigationItemSelectedListener {
-    private val pagerAdapter by lazy { MainPagerAdapter(childFragmentManager, emptyList()) }
+    private val pagerAdapter by lazy { MainPagerAdapter(childFragmentManager, getListTabItem()) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,6 +36,13 @@ class MainFragment : Fragment(R.layout.fragment_main), ViewPager.OnPageChangeLis
         }
         view?.mainBottomNavigation?.setOnNavigationItemSelectedListener(this@MainFragment)
     }
+
+    private fun getListTabItem() = listOf(
+        MainTabItem(requireContext().getString(R.string.home), HomeFragment.newInstance()),
+        MainTabItem(requireContext().getString(R.string.trending), TrendingFragment.newInstance()),
+        MainTabItem(requireContext().getString(R.string.album), AlbumFragment.newInstance()),
+        MainTabItem(requireContext().getString(R.string.genres), GenresFragment.newInstance())
+    )
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         view?.apply {

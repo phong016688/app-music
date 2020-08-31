@@ -7,7 +7,16 @@ import androidx.fragment.app.FragmentTransaction
 import com.example.sunmusic.R
 
 inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
-    beginTransaction().func().commit()
+    beginTransaction().apply {
+        setCustomAnimations(
+            R.anim.enter_from_left,
+            R.anim.close_to_right,
+            R.anim.enter_from_right,
+            R.anim.close_to_right
+        )
+        func()
+        commit()
+    }
 }
 
 fun AppCompatActivity.popBackStack() {
