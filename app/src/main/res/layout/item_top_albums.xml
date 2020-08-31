@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:baselineAligned="false"
+    android:gravity="center">
+
+    <include
+        android:id="@+id/albumTop1Layout"
+        layout="@layout/album_layout" />
+
+    <include
+        android:id="@+id/albumTop2Layout"
+        layout="@layout/album_layout" />
+
+    <include
+        android:id="@+id/albumTop3Layout"
+        layout="@layout/album_layout" />
+</LinearLayout>

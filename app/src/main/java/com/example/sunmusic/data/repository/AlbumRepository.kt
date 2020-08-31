@@ -1,20 +1,31 @@
 package com.example.sunmusic.data.repository
 
+import com.example.sunmusic.data.executor.AppExecutor
+import com.example.sunmusic.data.executor.AppExecutorImpl
 import com.example.sunmusic.data.model.Album
 import com.example.sunmusic.data.source.AlbumDataSource
 import com.example.sunmusic.data.source.remote.AlbumRemoteDataSource
+import java.util.concurrent.Future
 import kotlin.LazyThreadSafetyMode.SYNCHRONIZED
 
 interface AlbumRepository {
-    fun getTopAlbums(limit: Int): List<Album>
+    fun getTopAlbums(limit: Int): Future<List<Album>>
 }
 
-class AlbumRepositoryImpl(private val remote: AlbumDataSource.Remote) : AlbumRepository {
+class AlbumRepositoryImpl(
+    private val remote: AlbumDataSource.Remote,
+    private val appExecutor: AppExecutor
+) : AlbumRepository {
     companion object {
-        val instance by lazy(SYNCHRONIZED) { AlbumRepositoryImpl(AlbumRemoteDataSource.instance) }
+        val instance by lazy(SYNCHRONIZED) {
+            AlbumRepositoryImpl(
+                AlbumRemoteDataSource.instance,
+                AppExecutorImpl.instance
+            )
+        }
     }
 
-    override fun getTopAlbums(limit: Int): List<Album> {
-        return remote.getTopAlbums(limit).map { it.toAlbum() }
+    override fun getTopAlbums(limit: Int): Future<List<Album>> {
+        return appExecutor.create { remote.getTopAlbums(limit).map { it.toAlbum() } }
     }
 }
