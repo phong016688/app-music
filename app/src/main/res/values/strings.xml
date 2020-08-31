@@ -9,4 +9,5 @@
     <string name="number_2">2</string>
     <string name="number_3">3</string>
     <string name="list_track">Danh sách nhạc thịnh hành</string>
+    <string name="search_track">Tìm kiếm bài hát..</string>
 </resources>

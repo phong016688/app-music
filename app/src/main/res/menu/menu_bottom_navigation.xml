@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="@string/home"
+        app:actionViewClass="com.google.android.material.tabs.TabItem" />
+    <item
+        android:id="@+id/trending"
+        android:icon="@drawable/ic_baseline_trending_up_24"
+        android:title="@string/trending"
+        app:actionViewClass="com.google.android.material.tabs.TabItem" />
+    <item
+        android:id="@+id/album"
+        android:icon="@drawable/ic_baseline_album_24"
+        android:title="@string/album"
+        app:actionViewClass="com.google.android.material.tabs.TabItem" />
+    <item
+        android:id="@+id/genres"
+        android:icon="@drawable/ic_baseline_category_24"
+        android:title="@string/genres"
+        app:actionViewClass="com.google.android.material.tabs.TabItem" />
+</menu>

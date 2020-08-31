@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.sunmusic.R
 import com.example.sunmusic.utils.BaseViewHolder
 import com.example.sunmusic.utils.loadFromUrl
-import kotlinx.android.synthetic.main.album_layout.view.*
 import kotlinx.android.synthetic.main.item_title.view.*
 import kotlinx.android.synthetic.main.item_top_albums.view.*
 import kotlinx.android.synthetic.main.item_track.view.*
+import kotlinx.android.synthetic.main.layout_album.view.*
 
 class TrendingAdapter : RecyclerView.Adapter<BaseViewHolder<TrendingItem>>() {
     private val listItem = mutableListOf<TrendingItem>()

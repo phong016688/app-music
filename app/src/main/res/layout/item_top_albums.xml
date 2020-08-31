@@ -7,13 +7,13 @@
 
     <include
         android:id="@+id/albumTop1Layout"
-        layout="@layout/album_layout" />
+        layout="@layout/layout_album" />
 
     <include
         android:id="@+id/albumTop2Layout"
-        layout="@layout/album_layout" />
+        layout="@layout/layout_album" />
 
     <include
         android:id="@+id/albumTop3Layout"
-        layout="@layout/album_layout" />
+        layout="@layout/layout_album" />
 </LinearLayout>
