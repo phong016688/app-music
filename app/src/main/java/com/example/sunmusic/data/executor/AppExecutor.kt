@@ -3,8 +3,6 @@ package com.example.sunmusic.data.executor
 import android.os.Handler
 import android.os.Looper
 import com.example.sunmusic.BuildConfig
-import java.lang.Exception
-import java.lang.RuntimeException
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.ThreadFactory

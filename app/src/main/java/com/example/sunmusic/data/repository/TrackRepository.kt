@@ -26,6 +26,11 @@ class TrackRepositoryImpl(
     }
 
     override fun getTopTracks(limit: Int): Future<List<Track>> {
-        return appExecutor.create { remote.getTopTracks(limit).map { it.toTrack() } }
+        return appExecutor.create {
+            remote.getTopTracks(limit).map {
+                val imageResponse = remote.getImageTrack(it.artistId)
+                it.toTrack(imageResponse.url)
+            }
+        }
     }
 }

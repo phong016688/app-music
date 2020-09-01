@@ -43,7 +43,7 @@ data class AlbumResponse(
         put("artistName", artistName)
     }
 
-    fun toAlbum() = Album(
+    fun toAlbum(imageAlbum: String) = Album(
         id,
         type,
         upc,
@@ -53,7 +53,8 @@ data class AlbumResponse(
         label,
         tags,
         trackCount,
-        artistName
+        artistName,
+        imageAlbum
     )
 }
 
