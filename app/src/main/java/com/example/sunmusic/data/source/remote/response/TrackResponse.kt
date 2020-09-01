@@ -43,7 +43,7 @@ data class TrackResponse(
         put("previewURL", previewURL)
     }
 
-    fun toTrack() = Track(
+    fun toTrack(imageTrack: String) = Track(
         id,
         type,
         index,
@@ -53,6 +53,7 @@ data class TrackResponse(
         artistName,
         albumName,
         albumId,
-        previewURL
+        previewURL,
+        imageTrack
     )
 }

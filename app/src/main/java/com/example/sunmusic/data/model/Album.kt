@@ -10,5 +10,6 @@ data class Album(
     val label: String,
     val tags: List<String>,
     val trackCount: Int,
-    val artistName: String
+    val artistName: String,
+    val image: String
 )

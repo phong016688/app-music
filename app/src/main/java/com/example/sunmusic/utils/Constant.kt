@@ -8,7 +8,7 @@ object Constant {
     const val CONNECT_TIME_OUT = 10000
     const val READ_TIME_OUT = 10000
     const val DEFAULT_TOP_ALBUM_COUNT = 3
-    const val DEFAULT_TOP_TRACK_COUNT = 100
+    const val DEFAULT_TOP_TRACK_COUNT = 10
 
     fun createUrlString(
         baseUrl: String,

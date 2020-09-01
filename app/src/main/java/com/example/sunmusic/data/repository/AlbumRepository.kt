@@ -26,6 +26,11 @@ class AlbumRepositoryImpl(
     }
 
     override fun getTopAlbums(limit: Int): Future<List<Album>> {
-        return appExecutor.create { remote.getTopAlbums(limit).map { it.toAlbum() } }
+        return appExecutor.create {
+            remote.getTopAlbums(limit).map {
+                val imageResponse = remote.getImageAlbum(it.id)
+                it.toAlbum(imageResponse.url)
+            }
+        }
     }
 }

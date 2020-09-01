@@ -58,17 +58,17 @@ class TrendingAdapter : RecyclerView.Adapter<BaseViewHolder<TrendingItem>>() {
         override fun bind(item: TrendingItem) = with(itemView) {
             if (item !is TrendingItem.AlbumsItem) return
             albumTop1Layout.run {
-                avatarImageView.loadFromUrl("")
+                avatarImageView.loadFromUrl(item.listAlbum[0].image)
                 nameTextView.text = item.listAlbum[0].name
                 oderTextView.text = context.getString(R.string.number_1)
             }
             albumTop2Layout.run {
-                avatarImageView.loadFromUrl("")
+                avatarImageView.loadFromUrl(item.listAlbum[1].image)
                 nameTextView.text = item.listAlbum[1].name
                 oderTextView.text = context.getString(R.string.number_2)
             }
             albumTop3Layout.run {
-                avatarImageView.loadFromUrl("")
+                avatarImageView.loadFromUrl(item.listAlbum[2].image)
                 nameTextView.text = item.listAlbum[2].name
                 oderTextView.text = context.getString(R.string.number_3)
             }
@@ -79,7 +79,7 @@ class TrendingAdapter : RecyclerView.Adapter<BaseViewHolder<TrendingItem>>() {
 
         override fun bind(item: TrendingItem) = with(itemView) {
             if (item !is TrendingItem.TrackItem) return
-            trackImageView.loadFromUrl("")
+            trackImageView.loadFromUrl(item.track.image)
             nameTrackTextView.text = item.track.name
             descripsionTrackTextView.text = item.track.artistName
             oderTrackTextView.text = item.position.toString()
