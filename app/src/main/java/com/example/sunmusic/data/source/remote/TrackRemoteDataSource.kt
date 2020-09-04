@@ -15,12 +15,13 @@ class TrackRemoteDataSource(private val apiService: ApiService) : TrackDataSourc
         val instance by lazy(SYNCHRONIZED) { TrackRemoteDataSource(ApiServiceImpl.instance) }
     }
 
-    override fun getTopTracks(limit: Int): List<TrackResponse> {
+    override fun getTopTracks(limit: Int, offset: Int): List<TrackResponse> {
         val data = apiService.get(
             UrlPath.TRACKS,
             TrackResponse::class.java,
             UrlPath.getTopTrackRouter(),
-            UrlPath.getLimitParam(limit)
+            UrlPath.getLimitParam(limit),
+            UrlPath.getOffsetParam(offset)
         )
         if (data.isNotEmpty()) {
             return data

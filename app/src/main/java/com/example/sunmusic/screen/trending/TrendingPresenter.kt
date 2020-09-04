@@ -28,6 +28,15 @@ class TrendingPresenter(
             })
     }
 
+    override fun loadMoreTopTracks(limit: Int, offset: Int) {
+        trackRepository.getTopTracks(limit, offset)
+            .subscribe({
+                view?.showTopTracks(it)
+            }, {
+                view?.showError(it)
+            })
+    }
+
     override fun onStart() {
         getTopAlbums()
         getTopTracks()

@@ -15,5 +15,6 @@ interface TrendingContract {
     interface Presenter : BasePresenter<View> {
         fun getTopAlbums(limit: Int = Constant.DEFAULT_TOP_ALBUM_COUNT)
         fun getTopTracks(limit: Int = Constant.DEFAULT_TOP_TRACK_COUNT)
+        fun loadMoreTopTracks(limit: Int = Constant.LOAD_MORE_COUNT, offset: Int)
     }
 }

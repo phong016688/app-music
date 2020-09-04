@@ -9,6 +9,9 @@ object Constant {
     const val READ_TIME_OUT = 10000
     const val DEFAULT_TOP_ALBUM_COUNT = 3
     const val DEFAULT_TOP_TRACK_COUNT = 10
+    const val LOAD_MORE_COUNT = 5
+    const val FIRST_ITEM_INDEX = 0
+    const val FIRST_POSITION_INDEX = 1
 
     fun createUrlString(
         baseUrl: String,
