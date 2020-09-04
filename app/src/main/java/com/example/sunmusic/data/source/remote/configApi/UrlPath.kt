@@ -8,6 +8,7 @@ object UrlPath {
     const val ARTISTS = "artists"
 
     fun getLimitParam(limit: Int) = "limit=$limit"
+    fun getOffsetParam(offset: Int) = "offset=$offset"
     fun getTopAlbumRouter() = "$ALBUMS/$TOP"
     fun getTopTrackRouter() = "$TRACKS/$TOP"
     fun getImageAlbumRouter(albumId: String) = "$ALBUMS/$albumId/$IMAGES"

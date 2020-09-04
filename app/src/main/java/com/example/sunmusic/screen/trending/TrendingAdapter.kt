@@ -5,7 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sunmusic.R
+import com.example.sunmusic.data.model.Track
 import com.example.sunmusic.utils.BaseViewHolder
+import com.example.sunmusic.utils.Constant
 import com.example.sunmusic.utils.loadFromUrl
 import kotlinx.android.synthetic.main.item_title.view.*
 import kotlinx.android.synthetic.main.item_top_albums.view.*
@@ -14,6 +16,8 @@ import kotlinx.android.synthetic.main.layout_album.view.*
 
 class TrendingAdapter : RecyclerView.Adapter<BaseViewHolder<TrendingItem>>() {
     private val listItem = mutableListOf<TrendingItem>()
+    private var isLoadMore = false
+    private var itemTrendingCLickListener: ItemTrendingCLickListener? = null
 
     override fun getItemViewType(position: Int) = listItem[position].type
 
@@ -29,8 +33,12 @@ class TrendingAdapter : RecyclerView.Adapter<BaseViewHolder<TrendingItem>>() {
             TrendingItem.TYPE_TITLE_TRACK -> TitleTrackViewHolder(
                 inflate.inflate(R.layout.item_title, parent, false)
             )
-            else -> TrackViewHolder(
-                inflate.inflate(R.layout.item_track, parent, false)
+            TrendingItem.TYPE_TRACK_VIEW -> TrackViewHolder(
+                inflate.inflate(R.layout.item_track, parent, false),
+                itemTrendingCLickListener
+            )
+            else -> LoadMoreViewHolder(
+                inflate.inflate(R.layout.item_load_more, parent, false)
             )
         }
     }
@@ -41,16 +49,39 @@ class TrendingAdapter : RecyclerView.Adapter<BaseViewHolder<TrendingItem>>() {
         holder.bind(listItem[position])
     }
 
-    fun updateListItem(vararg items: TrendingItem) {
-        val oldSizeListItem = listItem.size
-        listItem.addAll(items)
-        listItem.sortBy { it.type }
-        if (listItem.size > 0) {
-            notifyItemRangeInserted(oldSizeListItem, items.size)
-        } else {
-            listItem.clear()
-            notifyDataSetChanged()
+    fun addTitleTrackItem() {
+        listItem.add(TrendingItem.TitleTrack)
+        notifyItemInserted(itemCount)
+    }
+
+    fun addTopAlbumItem(topAlbumItem: TrendingItem.AlbumsItem) {
+        listItem.add(Constant.FIRST_ITEM_INDEX, topAlbumItem)
+        notifyItemInserted(Constant.FIRST_POSITION_INDEX)
+    }
+
+    fun addListTrackItem(trackItems: List<TrendingItem.TrackItem>) {
+        listItem.addAll(trackItems)
+        notifyItemRangeInserted(itemCount + Constant.FIRST_POSITION_INDEX, trackItems.size)
+    }
+
+    fun startLoadMore() {
+        if (!isLoadMore) {
+            isLoadMore = true
+            listItem.add(TrendingItem.LoadMore)
+            notifyItemInserted(itemCount + Constant.FIRST_POSITION_INDEX)
         }
+    }
+
+    fun stopLoadMore() {
+        if (isLoadMore) {
+            isLoadMore = false
+            listItem.remove(TrendingItem.LoadMore)
+            notifyItemRemoved(itemCount)
+        }
+    }
+
+    fun setOnClickListener(itemClickListener: ItemTrendingCLickListener?) {
+        itemTrendingCLickListener = itemClickListener
     }
 
     class TopAlbumsViewHolder(itemView: View) : BaseViewHolder<TrendingItem>(itemView) {
@@ -75,10 +106,21 @@ class TrendingAdapter : RecyclerView.Adapter<BaseViewHolder<TrendingItem>>() {
         }
     }
 
-    class TrackViewHolder(itemView: View) : BaseViewHolder<TrendingItem>(itemView) {
+    class TrackViewHolder(
+        itemView: View,
+        private val itemClickListener: ItemTrendingCLickListener?
+    ) : BaseViewHolder<TrendingItem>(itemView) {
+        private var item: TrendingItem.TrackItem? = null
+
+        init {
+            itemView.playButtonImageView.setOnClickListener {
+                itemClickListener?.onPlayTrackClick(item?.track ?: return@setOnClickListener)
+            }
+        }
 
         override fun bind(item: TrendingItem) = with(itemView) {
             if (item !is TrendingItem.TrackItem) return
+            this@TrackViewHolder.item = item
             trackImageView.loadFromUrl(item.track.image)
             nameTrackTextView.text = item.track.name
             descripsionTrackTextView.text = item.track.artistName
@@ -91,5 +133,14 @@ class TrendingAdapter : RecyclerView.Adapter<BaseViewHolder<TrendingItem>>() {
         override fun bind(item: TrendingItem) = with(itemView) {
             titleTextView.text = context.getString(R.string.list_track)
         }
+    }
+
+    class LoadMoreViewHolder(itemView: View) : BaseViewHolder<TrendingItem>(itemView) {
+
+        override fun bind(item: TrendingItem) = Unit
+    }
+
+    interface ItemTrendingCLickListener {
+        fun onPlayTrackClick(track: Track)
     }
 }
