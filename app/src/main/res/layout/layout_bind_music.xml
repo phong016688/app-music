@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/titleListeningTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:text="@string/listening"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/sp_20"
+        app:layout_constraintEnd_toStartOf="@id/nameMusicTextView"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/nameMusicTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_10"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/sp_20"
+        app:layout_constraintBottom_toBottomOf="@+id/titleListeningTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@+id/titleListeningTextView"
+        app:layout_constraintTop_toTopOf="@+id/titleListeningTextView"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <SeekBar
+        android:id="@+id/musicSeekBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_20"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleListeningTextView" />
+
+    <TextView
+        android:id="@+id/currentTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        app:layout_constraintStart_toStartOf="@id/musicSeekBar"
+        app:layout_constraintTop_toBottomOf="@id/musicSeekBar" />
+
+    <TextView
+        android:id="@+id/endTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        app:layout_constraintEnd_toEndOf="@id/musicSeekBar"
+        app:layout_constraintTop_toBottomOf="@id/musicSeekBar" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/endTimeTextView">
+
+        <ImageView
+            android:id="@+id/downVolumeImageView"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_30"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:src="@drawable/ic_baseline_volume_down_24"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/backImageView"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_80"
+            android:layout_weight="1"
+            android:src="@drawable/ic_baseline_skip_previous_24"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/playImageView"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_80"
+            android:layout_weight="1"
+            android:src="@drawable/ic_baseline_pause_circle_outline_24"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/nextImageView"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_80"
+            android:layout_weight="1"
+            android:src="@drawable/ic_baseline_skip_next_24"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/upVolumeImageView"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_30"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:src="@drawable/ic_baseline_volume_up_24"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
