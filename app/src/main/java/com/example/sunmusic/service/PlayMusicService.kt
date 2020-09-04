@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
+import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
@@ -12,18 +13,15 @@ import com.example.sunmusic.BuildConfig
 import com.example.sunmusic.R
 import com.example.sunmusic.screen.main.MainActivity
 import com.example.sunmusic.utils.musicplayer.MusicMediaPlayer
+import kotlin.random.Random
 
 class PlayMusicService : Service() {
-    private val musicPlayer by lazy { MusicMediaPlayer.getInstance(applicationContext) }
+    val musicPlayer by lazy { MusicMediaPlayer.getInstance(applicationContext) }
 
-    override fun onBind(intent: Intent?): IBinder? = null
+    override fun onBind(intent: Intent?): IBinder? = LocalBinder()
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        when (intent?.action) {
-            START_FOREGROUND_SERVICE -> startForegroundService()
-            STOP_FOREGROUND_SERVICE -> stopForeground(true)
-            START_MUSIC -> musicPlayer.startMusic()
-        }
+        startForegroundService()
         return START_REDELIVER_INTENT
     }
 
@@ -55,13 +53,14 @@ class PlayMusicService : Service() {
         }
     }
 
+    inner class LocalBinder : Binder() {
+        fun getService() = this@PlayMusicService
+    }
+
     companion object {
         const val CHANNEL_ID_NOTIFICATION = "CHANNEL_ID_IN_${BuildConfig.APPLICATION_ID}"
         const val CHANNEL_NAME_NOTIFICATION = "CHANNEL_NAME_IN_${BuildConfig.APPLICATION_ID}"
         const val REQUEST_CODE_PENDING_INTENT = 0
-        const val ID_START_FOREGROUND_SERVICE = 0
-        const val START_FOREGROUND_SERVICE = "START_FOREGROUND_SERVICE"
-        const val STOP_FOREGROUND_SERVICE = "STOP_FOREGROUND_SERVICE"
-        const val START_MUSIC = "START_MUSIC"
+        val ID_START_FOREGROUND_SERVICE = Random.nextInt()
     }
 }

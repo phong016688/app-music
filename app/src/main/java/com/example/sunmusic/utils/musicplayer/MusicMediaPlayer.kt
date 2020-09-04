@@ -10,10 +10,11 @@ import com.example.sunmusic.data.model.PlayMusic
 interface BaseMusicPlayer {
     fun addMusics(vararg musics: PlayMusic)
     fun removeMusicsById(vararg musicIds: String)
+    fun currentPlayMusic(): PlayMusic?
+    fun stopMusic()
     fun clearListMusic()
     fun startMusic()
     fun pauseMusic()
-    fun stopMusic()
 }
 
 class MusicMediaPlayer(private val context: Context) :
@@ -40,7 +41,6 @@ class MusicMediaPlayer(private val context: Context) :
             }
             setOnCompletionListener {
                 state = StateMusic.COMPLETED
-                nextCurrentMusic()
                 reset()
                 startMusic()
             }
@@ -50,7 +50,6 @@ class MusicMediaPlayer(private val context: Context) :
     override fun addMusics(vararg musics: PlayMusic) {
         val listMusicFilter = musics.filterNot { music -> listMusic.any { it.id == music.id } }
         listMusic.addAll(listMusicFilter)
-        nextCurrentMusic()
     }
 
     override fun removeMusicsById(vararg musicIds: String) {
@@ -64,7 +63,8 @@ class MusicMediaPlayer(private val context: Context) :
     }
 
     override fun startMusic() {
-        if (state != StateMusic.STARTED) {
+        if (state != StateMusic.STARTED && state != StateMusic.PREPARING) {
+            nextCurrentMusic()
             setDateSourceCurrentMusic(currentMusic ?: return)
             mediaPlayer.prepareAsync()
             state = StateMusic.PREPARING
@@ -85,8 +85,14 @@ class MusicMediaPlayer(private val context: Context) :
         }
     }
 
+    override fun currentPlayMusic() = currentMusic
+
     fun addOnStateChangeListener(listener: MediaListener) {
         stateChangeListeners.add(listener)
+    }
+
+    fun removeOnStateChangeListener(listener: MediaListener) {
+        stateChangeListeners.remove(listener)
     }
 
     private fun getAudioAttributes(): AudioAttributes? {

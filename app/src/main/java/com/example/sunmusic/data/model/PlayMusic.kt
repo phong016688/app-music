@@ -7,5 +7,6 @@ data class PlayMusic(
     val uri: String = "",
     val image: String = "",
     val duration: Int = 0,
-    var currentDuration: Int = 0
+    var currentDuration: Int = 0,
+    val artistName: String = ""
 )

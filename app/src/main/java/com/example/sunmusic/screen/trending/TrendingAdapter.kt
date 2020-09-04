@@ -50,6 +50,7 @@ class TrendingAdapter : RecyclerView.Adapter<BaseViewHolder<TrendingItem>>() {
     }
 
     fun addTitleTrackItem() {
+        if (listItem.any { it is TrendingItem.TitleTrack }) return
         listItem.add(TrendingItem.TitleTrack)
         notifyItemInserted(itemCount)
     }
