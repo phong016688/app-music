@@ -6,6 +6,7 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.PowerManager
 import com.example.sunmusic.data.model.PlayMusic
+import com.example.sunmusic.utils.Constant
 
 interface BaseMusicPlayer {
     fun addMusics(vararg musics: PlayMusic)
@@ -22,7 +23,7 @@ class MusicMediaPlayer(private val context: Context) :
     private var mediaPlayer: MediaPlayer
     private val stateChangeListeners = mutableListOf<MediaListener>()
     private val listMusic = mutableListOf<PlayMusic>()
-    private var currentMusic: PlayMusic? = null
+    private var currentPosition: Int = Constant.NO_EXIT
     private var state: StateMusic? = null
         set(value) {
             field = value
@@ -42,7 +43,6 @@ class MusicMediaPlayer(private val context: Context) :
             setOnCompletionListener {
                 state = StateMusic.COMPLETED
                 reset()
-                startMusic()
             }
         }
     }
@@ -53,39 +53,43 @@ class MusicMediaPlayer(private val context: Context) :
     }
 
     override fun removeMusicsById(vararg musicIds: String) {
-        listMusic.removeIf { music -> musicIds.any { it == music.id && it != currentMusic?.id } }
-        nextCurrentMusic()
+        musicIds.forEach { musicId ->
+            val positionRemove = listMusic.indexOfFirst { it.id == musicId }
+            if (positionRemove != Constant.NO_EXIT)
+                listMusic.removeAt(positionRemove)
+        }
     }
 
     override fun clearListMusic() {
         listMusic.clear()
-        nextCurrentMusic()
+        nextMusic()
     }
 
     override fun startMusic() {
-        if (state != StateMusic.STARTED && state != StateMusic.PREPARING) {
-            nextCurrentMusic()
-            setDateSourceCurrentMusic(currentMusic ?: return)
+        val stateCanStart = state != StateMusic.STARTED && state != StateMusic.PREPARING
+        if (stateCanStart && currentPosition in listMusic.indices) {
+            setDateSourceCurrentMusic(listMusic[currentPosition])
             mediaPlayer.prepareAsync()
             state = StateMusic.PREPARING
         }
     }
 
     override fun pauseMusic() {
-        if (mediaPlayer.isLooping) {
+        if (mediaPlayer.isPlaying && state == StateMusic.STARTED) {
             mediaPlayer.pause()
             state = StateMusic.PAUSED
         }
     }
 
     override fun stopMusic() {
-        if (mediaPlayer.isPlaying) {
+        val stateCanStop = state == StateMusic.STARTED || state == StateMusic.PAUSED
+        if (mediaPlayer.isPlaying && stateCanStop) {
             mediaPlayer.stop()
             state = StateMusic.STOP
         }
     }
 
-    override fun currentPlayMusic() = currentMusic
+    override fun currentPlayMusic() = listMusic.elementAtOrElse(currentPosition) { null }
 
     fun addOnStateChangeListener(listener: MediaListener) {
         stateChangeListeners.add(listener)
@@ -102,25 +106,19 @@ class MusicMediaPlayer(private val context: Context) :
             .build()
     }
 
-    private fun nextCurrentMusic() {
-        val indexOfCM = listMusic.indexOfFirst { it.id == currentMusic?.id }
-        currentMusic = when {
-            indexOfCM == -1 && listMusic.isNotEmpty() -> listMusic[0]
-            indexOfCM in 0..(listMusic.size - 2) -> listMusic[indexOfCM + 1]
-            else -> null
-        }
+    private fun nextMusic() {
+        currentPosition++
     }
 
     private fun setDateSourceCurrentMusic(music: PlayMusic) {
         try {
-            if (music.url.isNotEmpty()) {
-                mediaPlayer.setDataSource(music.url)
+            if (music.uri.isNotEmpty()) {
+                mediaPlayer.setDataSource(context, Uri.parse(music.url))
             } else {
-                mediaPlayer.setDataSource(context, Uri.parse(music.uri))
+                mediaPlayer.setDataSource(music.url)
             }
         } catch (e: RuntimeException) {
-            nextCurrentMusic()
-            setDateSourceCurrentMusic(currentMusic ?: return)
+            state = StateMusic.ERROR
         }
     }
 

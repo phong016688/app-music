@@ -71,46 +71,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/endTimeTextView">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/downVolumeImageView"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dp_30"
             android:layout_height="@dimen/dp_30"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:src="@drawable/ic_baseline_volume_down_24"
-            tools:ignore="ContentDescription" />
+            android:src="@drawable/ic_baseline_volume_down_24" />
 
-        <ImageView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/backImageView"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_80"
             android:layout_weight="1"
-            android:src="@drawable/ic_baseline_skip_previous_24"
-            tools:ignore="ContentDescription" />
+            android:background="@drawable/ic_baseline_skip_previous_24" />
 
-        <ImageView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/playImageView"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_80"
             android:layout_weight="1"
-            android:src="@drawable/ic_baseline_pause_circle_outline_24"
-            tools:ignore="ContentDescription" />
+            android:background="@drawable/ic_baseline_play_circle_outline_24" />
 
-        <ImageView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/nextImageView"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_80"
             android:layout_weight="1"
-            android:src="@drawable/ic_baseline_skip_next_24"
-            tools:ignore="ContentDescription" />
+            android:background="@drawable/ic_baseline_skip_next_24" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/upVolumeImageView"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_30"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:src="@drawable/ic_baseline_volume_up_24"
-            tools:ignore="ContentDescription" />
+            android:backgroundTint="@android:color/white"
+            android:src="@drawable/ic_baseline_volume_up_24" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

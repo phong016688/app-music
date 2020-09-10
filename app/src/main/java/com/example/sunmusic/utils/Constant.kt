@@ -3,6 +3,7 @@ package com.example.sunmusic.utils
 import com.example.sunmusic.BuildConfig
 
 object Constant {
+    const val NO_EXIT = -1
     const val BASE_URL = BuildConfig.BASE_URL
     const val API_KEY = BuildConfig.API_KEY
     const val CONNECT_TIME_OUT = 10000
