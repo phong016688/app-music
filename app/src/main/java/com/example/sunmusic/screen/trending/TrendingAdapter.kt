@@ -8,6 +8,7 @@ import com.example.sunmusic.R
 import com.example.sunmusic.data.model.Track
 import com.example.sunmusic.utils.BaseViewHolder
 import com.example.sunmusic.utils.Constant
+import com.example.sunmusic.utils.LoadMoreViewHolder
 import com.example.sunmusic.utils.loadFromUrl
 import kotlinx.android.synthetic.main.item_title.view.*
 import kotlinx.android.synthetic.main.item_top_albums.view.*
@@ -69,7 +70,7 @@ class TrendingAdapter : RecyclerView.Adapter<BaseViewHolder<TrendingItem>>() {
         if (!isLoadMore) {
             isLoadMore = true
             listItem.add(TrendingItem.LoadMore)
-            notifyItemInserted(itemCount + Constant.FIRST_POSITION_INDEX)
+            notifyItemInserted(itemCount - 1)
         }
     }
 
@@ -134,11 +135,6 @@ class TrendingAdapter : RecyclerView.Adapter<BaseViewHolder<TrendingItem>>() {
         override fun bind(item: TrendingItem) = with(itemView) {
             titleTextView.text = context.getString(R.string.list_track)
         }
-    }
-
-    class LoadMoreViewHolder(itemView: View) : BaseViewHolder<TrendingItem>(itemView) {
-
-        override fun bind(item: TrendingItem) = Unit
     }
 
     interface ItemTrendingCLickListener {

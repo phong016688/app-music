@@ -82,21 +82,21 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/backImageView"
             android:layout_width="0dp"
-            android:layout_height="@dimen/dp_80"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/ic_baseline_skip_previous_24" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/playImageView"
             android:layout_width="0dp"
-            android:layout_height="@dimen/dp_80"
+            android:layout_height="@dimen/dp_70"
             android:layout_weight="1"
             android:background="@drawable/ic_baseline_play_circle_outline_24" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/nextImageView"
             android:layout_width="0dp"
-            android:layout_height="@dimen/dp_80"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/ic_baseline_skip_next_24" />
 

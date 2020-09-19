@@ -10,10 +10,8 @@ import com.example.sunmusic.data.model.Track
 import com.example.sunmusic.data.repository.AlbumRepositoryImpl
 import com.example.sunmusic.data.repository.TrackRepositoryImpl
 import com.example.sunmusic.screen.main.MainActivity
-import com.example.sunmusic.screen.play.PlayFragment
 import com.example.sunmusic.utils.Constant
 import com.example.sunmusic.utils.CustomOnScrollListener
-import com.example.sunmusic.utils.replaceFragment
 import com.example.sunmusic.utils.toast
 import kotlinx.android.synthetic.main.fragment_trending.view.*
 
@@ -27,7 +25,7 @@ class TrendingFragment : Fragment(R.layout.fragment_trending), TrendingContract.
         )
     }
     private lateinit var onScrollListener: CustomOnScrollListener
-    private var currentOffsetTrack = Constant.DEFAULT_TOP_TRACK_COUNT
+    private var currentOffsetTrack = Constant.DEFAULT_FIRST_LOAD_COUNT
     private var currentOderTrack = Constant.FIRST_POSITION_INDEX
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,8 +96,14 @@ class TrendingFragment : Fragment(R.layout.fragment_trending), TrendingContract.
 
     override fun onPlayTrackClick(track: Track) {
         (activity as? MainActivity)?.apply {
-            getMusicService()?.musicPlayer?.addMusics(createPlayMusic(track))
-            replaceFragment(PlayFragment.newInstance(), R.id.container, true)
+            getMusicService()?.musicPlayer?.apply {
+                val music = createPlayMusic(track)
+                stopMusic()
+                addMusics(music)
+                moveToMusic(music.id)
+                startMusic()
+            }
+
         }
     }
 

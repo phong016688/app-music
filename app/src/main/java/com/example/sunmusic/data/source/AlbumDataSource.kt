@@ -7,5 +7,7 @@ interface AlbumDataSource {
     interface Remote {
         fun getTopAlbums(limit: Int): List<AlbumResponse>
         fun getImageAlbum(albumId: String): ImageResponse
+        fun getNewAlbums(limit: Int, offset: Int): List<AlbumResponse>
+        fun getDetailAlbum(albumId: String)
     }
 }

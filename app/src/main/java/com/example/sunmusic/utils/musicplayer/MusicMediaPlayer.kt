@@ -12,10 +12,13 @@ interface BaseMusicPlayer {
     fun addMusics(vararg musics: PlayMusic)
     fun removeMusicsById(vararg musicIds: String)
     fun currentPlayMusic(): PlayMusic?
+    fun moveToMusic(musicId: String)
+    fun nextMusic()
     fun stopMusic()
     fun clearListMusic()
     fun startMusic()
     fun pauseMusic()
+    fun playMusic()
 }
 
 class MusicMediaPlayer(private val context: Context) :
@@ -42,7 +45,8 @@ class MusicMediaPlayer(private val context: Context) :
             }
             setOnCompletionListener {
                 state = StateMusic.COMPLETED
-                reset()
+                nextMusic()
+                startMusic()
             }
         }
     }
@@ -68,6 +72,7 @@ class MusicMediaPlayer(private val context: Context) :
     override fun startMusic() {
         val stateCanStart = state != StateMusic.STARTED && state != StateMusic.PREPARING
         if (stateCanStart && currentPosition in listMusic.indices) {
+            mediaPlayer.reset()
             setDateSourceCurrentMusic(listMusic[currentPosition])
             mediaPlayer.prepareAsync()
             state = StateMusic.PREPARING
@@ -78,6 +83,12 @@ class MusicMediaPlayer(private val context: Context) :
         if (mediaPlayer.isPlaying && state == StateMusic.STARTED) {
             mediaPlayer.pause()
             state = StateMusic.PAUSED
+        }
+    }
+
+    override fun playMusic() {
+        if (mediaPlayer.isPlaying && state == StateMusic.PAUSED) {
+            mediaPlayer.start()
         }
     }
 
@@ -106,8 +117,19 @@ class MusicMediaPlayer(private val context: Context) :
             .build()
     }
 
-    private fun nextMusic() {
+    override fun nextMusic() {
         currentPosition++
+        if (currentPosition !in listMusic.indices) {
+            currentPosition = Constant.NO_EXIT
+        }
+
+    }
+
+    override fun moveToMusic(musicId: String) {
+        val position = listMusic.indexOfFirst { it.id == musicId }
+        if (position != Constant.NO_EXIT) {
+            currentPosition = position
+        }
     }
 
     private fun setDateSourceCurrentMusic(music: PlayMusic) {

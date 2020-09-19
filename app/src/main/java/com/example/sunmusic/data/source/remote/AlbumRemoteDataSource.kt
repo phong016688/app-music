@@ -36,4 +36,18 @@ class AlbumRemoteDataSource(private val apiService: ApiService) : AlbumDataSourc
         )
         return data.firstOrNull() ?: ImageResponse()
     }
+
+    override fun getNewAlbums(limit: Int, offset: Int): List<AlbumResponse> {
+        val data = apiService.get(
+            UrlPath.ALBUMS,
+            AlbumResponse::class.java,
+            UrlPath.getNewAlbumRouter(),
+            UrlPath.getLimitParam(limit),
+            UrlPath.getOffsetParam(offset)
+        )
+        if (data.isNotEmpty()) {
+            return data
+        }
+        throw Throwable(Error.NO_DATA)
+    }
 }

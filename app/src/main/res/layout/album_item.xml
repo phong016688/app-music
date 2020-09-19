@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/avatarLayout"
+        android:layout_width="@dimen/dp_150"
+        android:layout_height="@dimen/dp_150"
+        app:cardCornerRadius="@dimen/dp_10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/avatarAlbumImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:ignore="ContentDescription"
+            tools:srcCompat="@tools:sample/avatars" />
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <TextView
+        android:id="@+id/nameAlbumTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:ellipsize="end"
+        android:fontFamily="serif"
+        android:maxLines="1"
+        android:padding="@dimen/dp_2"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/sp_20"
+        app:layout_constraintEnd_toEndOf="@+id/avatarLayout"
+        app:layout_constraintStart_toStartOf="@+id/avatarLayout"
+        app:layout_constraintTop_toBottomOf="@id/avatarLayout" />
+
+    <TextView
+        android:id="@+id/nameArtistTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingHorizontal="@dimen/dp_10"
+        app:layout_constraintStart_toStartOf="@+id/avatarLayout"
+        app:layout_constraintTop_toBottomOf="@id/nameAlbumTextView" />
+</androidx.constraintlayout.widget.ConstraintLayout>

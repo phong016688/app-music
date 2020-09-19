@@ -13,4 +13,5 @@
     <string name="listening">Đang nghe:</string>
     <string name="play_list">Danh sách phát</string>
     <string name="song_next">Bài hát kế tiếp: %s</string>
+    <string name="list_album_new">Danh Sách Album mới nhất</string>
 </resources>

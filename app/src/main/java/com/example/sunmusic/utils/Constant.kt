@@ -9,7 +9,7 @@ object Constant {
     const val CONNECT_TIME_OUT = 10000
     const val READ_TIME_OUT = 10000
     const val DEFAULT_TOP_ALBUM_COUNT = 3
-    const val DEFAULT_TOP_TRACK_COUNT = 10
+    const val DEFAULT_FIRST_LOAD_COUNT = 10
     const val LOAD_MORE_COUNT = 5
     const val FIRST_ITEM_INDEX = 0
     const val FIRST_POSITION_INDEX = 1
