@@ -1,6 +1,7 @@
 package com.example.sunmusic.screen.album
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -10,7 +11,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sunmusic.R
 import com.example.sunmusic.data.repository.AlbumRepositoryImpl
+import com.example.sunmusic.screen.album.detail.DetailAlbumFragment
 import com.example.sunmusic.utils.CustomOnScrollListener
+import com.example.sunmusic.utils.replaceFragment
 import com.example.sunmusic.utils.toast
 import kotlinx.android.synthetic.main.fragment_album.*
 import kotlinx.android.synthetic.main.fragment_album.view.*
@@ -29,7 +32,20 @@ class AlbumFragment : Fragment(R.layout.fragment_album) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
+        handleEvents()
         observeView()
+    }
+
+    private fun handleEvents() {
+        albumNewAdapter.setItemClick {
+            when (it) {
+                is AlbumNewItem.AlbumItem -> activity?.replaceFragment(
+                    DetailAlbumFragment.newInstance(it.album.id),
+                    R.id.container,
+                    true
+                )
+            }
+        }
     }
 
     private fun setupRecyclerView() = view?.let {

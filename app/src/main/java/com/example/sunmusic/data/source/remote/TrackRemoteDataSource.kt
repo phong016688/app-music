@@ -37,4 +37,16 @@ class TrackRemoteDataSource(private val apiService: ApiService) : TrackDataSourc
         )
         return data.firstOrNull() ?: ImageResponse()
     }
+
+    override fun getTracksInAlbum(albumId: String): List<TrackResponse> {
+        val data = apiService.get(
+            UrlPath.TRACKS,
+            TrackResponse::class.java,
+            UrlPath.getTracksInAlbumRouter(albumId)
+        )
+        if (data.isNotEmpty()) {
+            return data
+        }
+        throw Throwable(Error.NO_DATA)
+    }
 }

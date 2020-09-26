@@ -1,5 +1,6 @@
 package com.example.sunmusic.data.source.remote.configApi
 
+import android.util.Log
 import com.example.sunmusic.utils.Constant
 import com.example.sunmusic.utils.Error
 import java.io.InputStreamReader
@@ -35,7 +36,7 @@ class ApiServiceImpl private constructor(
             return json.toObjectList(clazz, keyData)
         }
         httpConnection.disconnect()
-        throw Throwable(Error.CONNECT_HTTP_FAILURE)
+        throw Throwable("$urlString ${Error.CONNECT_HTTP_FAILURE}")
     }
 
     override fun get(keyData: String, router: String, vararg params: String): String {
@@ -45,7 +46,7 @@ class ApiServiceImpl private constructor(
             return InputStreamReader(httpConnection.inputStream).readText()
         }
         httpConnection.disconnect()
-        throw Throwable(Error.CONNECT_HTTP_FAILURE)
+        throw Throwable("$urlString ${Error.CONNECT_HTTP_FAILURE}")
     }
 
     private fun connectHttpUrl(urlString: String): HttpURLConnection {

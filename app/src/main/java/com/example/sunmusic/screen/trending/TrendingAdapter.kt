@@ -1,5 +1,6 @@
 package com.example.sunmusic.screen.trending
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -70,7 +71,7 @@ class TrendingAdapter : RecyclerView.Adapter<BaseViewHolder<TrendingItem>>() {
         if (!isLoadMore) {
             isLoadMore = true
             listItem.add(TrendingItem.LoadMore)
-            notifyItemInserted(itemCount - 1)
+            notifyItemInserted(itemCount)
         }
     }
 
@@ -78,7 +79,7 @@ class TrendingAdapter : RecyclerView.Adapter<BaseViewHolder<TrendingItem>>() {
         if (isLoadMore) {
             isLoadMore = false
             listItem.remove(TrendingItem.LoadMore)
-            notifyItemRemoved(itemCount)
+            notifyItemRemoved(itemCount - 1)
         }
     }
 

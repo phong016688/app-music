@@ -21,7 +21,11 @@ class PlayMusicService : Service() {
     override fun onBind(intent: Intent?): IBinder? = LocalBinder()
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        startForegroundService()
+        if (intent?.action == "STOP_FOREGROUND_REMOVE") {
+            stopForeground(true)
+        } else {
+            startForegroundService()
+        }
         return START_REDELIVER_INTENT
     }
 

@@ -7,5 +7,6 @@ interface TrackDataSource {
     interface Remote {
         fun getTopTracks(limit: Int, offset: Int): List<TrackResponse>
         fun getImageTrack(artistsId: String): ImageResponse
+        fun getTracksInAlbum(albumId: String): List<TrackResponse>
     }
 }

@@ -2,6 +2,7 @@ package com.example.sunmusic.utils
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.sunmusic.R
@@ -19,11 +20,11 @@ inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Fragmen
     }
 }
 
-fun AppCompatActivity.popBackStack() {
+fun FragmentActivity.popBackStack() {
     supportFragmentManager.popBackStack()
 }
 
-fun AppCompatActivity.replaceFragment(
+fun FragmentActivity.replaceFragment(
     fragment: Fragment,
     frameId: Int,
     addToStack: Boolean = false,

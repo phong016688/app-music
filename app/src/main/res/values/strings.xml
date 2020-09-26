@@ -14,4 +14,8 @@
     <string name="play_list">Danh sách phát</string>
     <string name="song_next">Bài hát kế tiếp: %s</string>
     <string name="list_album_new">Danh Sách Album mới nhất</string>
+    <string name="favorite">favorite</string>
+    <string name="back">back</string>
+    <string name="play_all">Phát tất cả</string>
+    <string name="dowloading">"Đang tải "</string>
 </resources>

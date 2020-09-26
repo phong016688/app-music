@@ -11,6 +11,7 @@ import kotlin.LazyThreadSafetyMode.SYNCHRONIZED
 interface AlbumRepository {
     fun getTopAlbums(limit: Int): Future<List<Album>>
     fun getNewAlbums(limit: Int, offset: Int): Future<List<Album>>
+    fun getDetailAlbum(albumId: String): Future<Album>
 }
 
 class AlbumRepositoryImpl(
@@ -37,10 +38,18 @@ class AlbumRepositoryImpl(
 
     override fun getNewAlbums(limit: Int, offset: Int): Future<List<Album>> {
         return appExecutor.create {
-            remote.getNewAlbums(limit, offset).map{
+            remote.getNewAlbums(limit, offset).map {
                 val imageResponse = remote.getImageAlbum(it.id)
                 it.toAlbum(imageResponse.url)
             }
+        }
+    }
+
+    override fun getDetailAlbum(albumId: String): Future<Album> {
+        return appExecutor.create {
+            val detailAlbum = remote.getDetailAlbum(albumId)
+            val imageResponse = remote.getImageAlbum(detailAlbum.id)
+            detailAlbum.toAlbum(imageResponse.url)
         }
     }
 }

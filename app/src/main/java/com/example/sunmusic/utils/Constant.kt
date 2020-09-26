@@ -13,6 +13,9 @@ object Constant {
     const val LOAD_MORE_COUNT = 5
     const val FIRST_ITEM_INDEX = 0
     const val FIRST_POSITION_INDEX = 1
+    const val ALBUM_ID = "ALBUM_ID"
+    const val DOWNLOAD_URL = "DOWNLOAD_URL"
+    const val NAME_MUSIC = "NAME_MUSIC"
 
     fun createUrlString(
         baseUrl: String,

@@ -50,4 +50,13 @@ class AlbumRemoteDataSource(private val apiService: ApiService) : AlbumDataSourc
         }
         throw Throwable(Error.NO_DATA)
     }
+
+    override fun getDetailAlbum(albumId: String): AlbumResponse {
+        val data = apiService.get(
+            UrlPath.ALBUMS,
+            AlbumResponse::class.java,
+            UrlPath.getDetailAlbumRouter(albumId)
+        )
+        return data.firstOrNull() ?: throw Throwable(Error.NO_DATA)
+    }
 }

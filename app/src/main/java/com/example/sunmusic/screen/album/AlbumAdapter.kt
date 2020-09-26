@@ -7,10 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.sunmusic.R
 import com.example.sunmusic.data.model.Album
 import com.example.sunmusic.utils.BaseViewHolder
-import com.example.sunmusic.utils.Constant
 import com.example.sunmusic.utils.LoadMoreViewHolder
 import com.example.sunmusic.utils.loadFromUrl
-import kotlinx.android.synthetic.main.album_item.view.*
+import kotlinx.android.synthetic.main.item_album.view.*
 import kotlinx.android.synthetic.main.item_load_more.view.*
 
 sealed class AlbumNewItem(val type: Int) {
@@ -25,6 +24,7 @@ sealed class AlbumNewItem(val type: Int) {
 
 class AlbumAdapter : RecyclerView.Adapter<BaseViewHolder<AlbumNewItem>>() {
     private val listData = mutableListOf<AlbumNewItem>(AlbumNewItem.LoadMoreItem(true))
+    private var itemClickListener: ((AlbumNewItem) -> Unit)? = null
 
     override fun getItemViewType(position: Int) = listData[position].type
 
@@ -38,7 +38,8 @@ class AlbumAdapter : RecyclerView.Adapter<BaseViewHolder<AlbumNewItem>>() {
                 inflater.inflate(R.layout.item_load_more, parent, false)
             )
             else -> AlbumViewHolder(
-                inflater.inflate(R.layout.album_item, parent, false)
+                inflater.inflate(R.layout.item_album, parent, false),
+                itemClickListener
             )
         }
     }
@@ -68,7 +69,7 @@ class AlbumAdapter : RecyclerView.Adapter<BaseViewHolder<AlbumNewItem>>() {
         val itemLast = listData.last()
         if (itemLast is AlbumNewItem.LoadMoreItem && !itemLast.isShowLoad) {
             itemLast.isShowLoad = true
-            notifyItemChanged(itemCount - 1)
+            notifyItemChanged(itemCount-1)
         }
     }
 
@@ -76,20 +77,31 @@ class AlbumAdapter : RecyclerView.Adapter<BaseViewHolder<AlbumNewItem>>() {
         val itemLast = listData.last()
         if (itemLast is AlbumNewItem.LoadMoreItem && itemLast.isShowLoad) {
             itemLast.isShowLoad = false
-            notifyItemChanged(itemCount - 1)
+            notifyItemChanged(itemCount-1)
         }
     }
 
     fun isLoadMore() = (listData.last() as? AlbumNewItem.LoadMoreItem)?.isShowLoad ?: false
 
-    class AlbumViewHolder(itemView: View) : BaseViewHolder<AlbumNewItem>(itemView) {
+    fun setItemClick(itemClickListener: ((AlbumNewItem) -> Unit)?) {
+        this.itemClickListener = itemClickListener
+    }
+
+    class AlbumViewHolder(
+        itemView: View,
+        private val itemClickListener: ((AlbumNewItem) -> Unit)?
+    ) : BaseViewHolder<AlbumNewItem>(itemView) {
+        private var item: AlbumNewItem.AlbumItem? = null
 
         init {
-            itemView.setOnClickListener(null)
+            itemView.setOnClickListener {
+                item?.let { itemClickListener?.invoke(it) }
+            }
         }
 
         override fun bind(item: AlbumNewItem) = with(itemView) {
             if (item is AlbumNewItem.AlbumItem) {
+                this@AlbumViewHolder.item = item
                 avatarAlbumImageView.loadFromUrl(item.album.image)
                 nameAlbumTextView.text = item.album.name
                 nameArtistTextView.text = item.album.artistName

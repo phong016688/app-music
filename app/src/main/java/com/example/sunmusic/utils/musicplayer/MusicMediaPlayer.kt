@@ -5,6 +5,7 @@ import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.PowerManager
+import android.util.Log
 import com.example.sunmusic.data.model.PlayMusic
 import com.example.sunmusic.utils.Constant
 
@@ -13,7 +14,10 @@ interface BaseMusicPlayer {
     fun removeMusicsById(vararg musicIds: String)
     fun currentPlayMusic(): PlayMusic?
     fun moveToMusic(musicId: String)
+    fun state(): StateMusic?
+    fun durationStarted(): Int
     fun nextMusic()
+    fun backMusic()
     fun stopMusic()
     fun clearListMusic()
     fun startMusic()
@@ -23,9 +27,9 @@ interface BaseMusicPlayer {
 
 class MusicMediaPlayer(private val context: Context) :
     BaseMusicPlayer {
+    val listMusic = mutableListOf<PlayMusic>()
     private var mediaPlayer: MediaPlayer
     private val stateChangeListeners = mutableListOf<MediaListener>()
-    private val listMusic = mutableListOf<PlayMusic>()
     private var currentPosition: Int = Constant.NO_EXIT
     private var state: StateMusic? = null
         set(value) {
@@ -104,6 +108,7 @@ class MusicMediaPlayer(private val context: Context) :
 
     fun addOnStateChangeListener(listener: MediaListener) {
         stateChangeListeners.add(listener)
+        listener.onStateChange(state ?: return)
     }
 
     fun removeOnStateChangeListener(listener: MediaListener) {
@@ -122,7 +127,13 @@ class MusicMediaPlayer(private val context: Context) :
         if (currentPosition !in listMusic.indices) {
             currentPosition = Constant.NO_EXIT
         }
+    }
 
+    override fun backMusic() {
+        currentPosition--
+        if (currentPosition !in listMusic.indices) {
+            currentPosition = Constant.NO_EXIT
+        }
     }
 
     override fun moveToMusic(musicId: String) {
@@ -131,6 +142,10 @@ class MusicMediaPlayer(private val context: Context) :
             currentPosition = position
         }
     }
+
+    override fun state() = state
+
+    override fun durationStarted() = mediaPlayer.currentPosition
 
     private fun setDateSourceCurrentMusic(music: PlayMusic) {
         try {

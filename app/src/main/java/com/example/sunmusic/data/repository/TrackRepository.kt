@@ -11,6 +11,7 @@ import kotlin.LazyThreadSafetyMode.SYNCHRONIZED
 
 interface TrackRepository {
     fun getTopTracks(limit: Int, offset: Int = Constant.FIRST_ITEM_INDEX): Future<List<Track>>
+    fun getTracksInAlbum(albumId: String): Future<List<Track>>
 }
 
 class TrackRepositoryImpl(
@@ -29,6 +30,15 @@ class TrackRepositoryImpl(
     override fun getTopTracks(limit: Int, offset: Int): Future<List<Track>> {
         return appExecutor.create {
             remote.getTopTracks(limit, offset).map {
+                val imageResponse = remote.getImageTrack(it.artistId)
+                it.toTrack(imageResponse.url)
+            }
+        }
+    }
+
+    override fun getTracksInAlbum(albumId: String): Future<List<Track>> {
+        return appExecutor.create {
+            remote.getTracksInAlbum(albumId).map {
                 val imageResponse = remote.getImageTrack(it.artistId)
                 it.toTrack(imageResponse.url)
             }

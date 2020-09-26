@@ -38,6 +38,14 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        Intent(this, PlayMusicService::class.java).also {
+            it.action = "STOP_FOREGROUND_REMOVE"
+            startService(it)
+        }
+    }
+
     override fun onStop() {
         super.onStop()
         if (musicService?.musicPlayer?.currentPlayMusic() == null) return
